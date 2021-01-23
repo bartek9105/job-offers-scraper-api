@@ -1,7 +1,11 @@
 const express = require('express')
 require('dotenv').config({ path: './config/.env' })
 const mongoose = require('mongoose')
+const cors = require('cors')
+
 const app = express()
+
+app.use(cors())
 
 const dbConnection = async () => await mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -12,11 +16,11 @@ const dbConnection = async () => await mongoose.connect(process.env.MONGO_URL, {
 
 dbConnection()
 
-const Technology = mongoose.model('Technology', { technologies: Array })
+const Offer = mongoose.model('Offer', { offers: Array }, 'technologies')
 
 app.get('/api/v1/offers', async (req, res) => {
   try {
-    const offers = await Technology.find()
+    const offers = await Offer.find()
     res.status(200).send(offers)
   } catch (error) {
     console.error(error)
