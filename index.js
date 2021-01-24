@@ -21,7 +21,7 @@ const Offer = mongoose.model('Offer', { offers: Array }, 'offers')
 
 app.get('/api/v1/offers', async (req, res) => {
   try {
-    const offers = await Offer.find()
+    const offers = await Offer.find().limit(1).sort({ $natural: -1 })
     res.status(200).send(offers)
   } catch (error) {
     console.error(error)
@@ -32,6 +32,12 @@ app.get('/api/v1/offers', async (req, res) => {
 app.get('/api/v1/offers/cities', async (req, res) => {
   try {
     const offers = await Offer.aggregate([
+      {
+        $limit: 1
+      },
+      {
+        $sort: { natural: -1 }
+      },
       { $unwind: '$offers' },
       {
         $group: {
@@ -51,6 +57,12 @@ app.get('/api/v1/offers/cities', async (req, res) => {
 app.get('/api/v1/offers/technologies', async (req, res) => {
   try {
     const offers = await Offer.aggregate([
+      {
+        $limit: 1
+      },
+      {
+        $sort: { natural: -1 }
+      },
       { $unwind: '$offers' },
       { $unwind: '$offers.technologies' },
       {
@@ -70,6 +82,12 @@ app.get('/api/v1/offers/technologies', async (req, res) => {
 app.get('/api/v1/offers/cities/technologies', async (req, res) => {
   try {
     const offers = await Offer.aggregate([
+      {
+        $limit: 1
+      },
+      {
+        $sort: { natural: -1 }
+      },
       { $unwind: '$offers' },
       { $unwind: '$offers.technologies' },
       {
