@@ -46,7 +46,8 @@ app.get('/api/v1/offers/cities', async (req, res) => {
         }
       },
       { $sort: { count: -1 } }
-    ])
+    ]).limit(20)
+
     res.status(200).send(offers)
   } catch (error) {
     console.error(error)
